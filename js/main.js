@@ -52,8 +52,8 @@ console.log(result);
 const ADVERTISEMENT_COUNT = 10;
 const advertisements = [];
 const TYPES_OF_HOUSING = ['bungalow', 'flat', 'house', 'palace'];
-const TIME_Of_CHECKIN = ['12.00', '13.00', '14.00'];
-const TIME_Of_CHECKOUT = ['12.00', '13.00', '14.00'];
+const TIME_OF_CHECKIN = ['12.00', '13.00', '14.00'];
+const TIME_OF_CHECKOUT = ['12.00', '13.00', '14.00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
