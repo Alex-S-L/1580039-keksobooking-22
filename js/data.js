@@ -1,6 +1,5 @@
 import {getRandomNumber, getRandomFloat} from './util.js';
 
-const ADVERTISEMENT_COUNT = 10;
 const advertisements = [];
 const TYPES_OF_HOUSING = ['bungalow', 'flat', 'house', 'palace'];
 const TIME_OF_CHECKIN = ['12.00', '13.00', '14.00'];
@@ -57,4 +56,4 @@ const getAdvertisements = (count) => {
   return advertisements;
 }
 
-export {getAdvertisements, ADVERTISEMENT_COUNT};
+export {getAdvertisements};
