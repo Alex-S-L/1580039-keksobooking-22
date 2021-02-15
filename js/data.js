@@ -1,6 +1,6 @@
 import {getRandomNumber, getRandomFloat} from './util.js';
 
-const advertisements = [];
+// const advertisements = []; /*Не пригодился. Пока закоменчу.*/
 const TYPES_OF_HOUSING = ['bungalow', 'flat', 'house', 'palace'];
 const TIME_OF_CHECKIN = ['12.00', '13.00', '14.00'];
 const TIME_OF_CHECKOUT = ['12.00', '13.00', '14.00'];
@@ -22,10 +22,10 @@ const getOffer = () => {
   return {
     title: 'Заголовок',
     address: 'x = ' + getRandomFloat(0, 180, 5) + ', ' + 'y = ' + getRandomFloat(0, 90, 5),
-    price: getRandomNumber(1000, 1000000),
+    price: getRandomNumber(1000, 1000000) + ' ₽/ночь',
     type: TYPES_OF_HOUSING[getRandomNumber(0, 3)],
-    rooms: getRandomNumber(0, 10),
-    guests: getRandomNumber(0, 10),
+    rooms: getRandomNumber(1, 10),
+    guests: getRandomNumber(1, 10),
     checkin: TIME_OF_CHECKIN[getRandomNumber(0, 2)],
     checkout: TIME_OF_CHECKOUT[getRandomNumber(0, 2)],
     features: getRandomFeatures(FEATURES),
@@ -48,12 +48,12 @@ const getAdvertisement = () => {
     location: getLocation(),
   }
 }
+// За ненадобностью пока закоменчу, а то линтер ругается.
+// const getAdvertisements = (count) => {
+//   for (let i = 0; i < count; i++) {
+//     advertisements.push(getAdvertisement());
+//   }
+//   return advertisements;
+// }
 
-const getAdvertisements = (count) => {
-  for (let i = 0; i < count; i++) {
-    advertisements.push(getAdvertisement());
-  }
-  return advertisements;
-}
-
-export {getAdvertisements};
+export {getAdvertisement};
