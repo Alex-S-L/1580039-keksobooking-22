@@ -9,30 +9,65 @@ const mapCanvas = document.querySelector('.map__canvas');
 const advertisementCardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const advertisement = getAdvertisement();
 
-const checkData = (tag, advertisementData) => {
-  if (typeof advertisementData === 'undefined') {
-    tag.style.display = 'none';
+const setAdvertisementDataSource = (element, advertisementData) => {
+  element.src = advertisementData;
+}
+
+const setAdvertisementDataText = (element, advertisementData) => {
+  element.textContent = advertisementData;
+}
+
+const setAdvertisementDataCapacityText = (element, advertisementDataOne, advertisementDataTwo) => {
+  element.textContent = advertisementDataOne + ' комнат для ' + advertisementDataTwo + ' гостей';
+}
+
+const setAdvertisementDataTimeText = (element, advertisementDataOne, advertisementDataTwo) => {
+  element.textContent = 'Заезд после ' + advertisementDataOne + ', Выезд до ' + advertisementDataTwo;
+}
+
+const checkData = (advertisementData) => {
+  if (!advertisementData || (Array.isArray(advertisementData) && !advertisementData.length)) {
+    return true;
   }
 }
 
-const checkDataArray = (tag, advertisementDataArray) => {
-  if ((advertisementDataArray.isArray) && (advertisementDataArray.length === 0)) {
-    tag.style.display = 'none'
+const setAdvertisementData = (element, advertisementData, setFunction) => {
+  if (checkData(advertisementData)) {
+    element.style.display = 'none';
+  } else {
+    setFunction(element, advertisementData);
   }
 }
 
-const getFeatureItems = (features) => {
-  const featuresItems = document.createDocumentFragment() ;
-  for (let i = 0; i < features.length; i++) {
+const setAdvertisementConcateData = (element, advertisementDataOne, advertisementDataTwo, setFunction) => {
+  if (checkData(advertisementDataOne) || checkData(advertisementDataTwo)) {
+    element.style.display = 'none';
+  } else {
+    setFunction(element, advertisementDataOne, advertisementDataTwo);
+  }
+}
+
+const setAdvertisementArrayData = (element, arrayData, setFunction) => {
+  element.textContent = '';
+  if (checkData(arrayData)) {
+    element.style.display = 'none';
+  } else {
+    element.appendChild(setFunction(arrayData))
+  }
+}
+
+const renderFeatureItems = (featuresArray) => {
+  const featureItems = document.createDocumentFragment() ;
+  for (let i = 0; i < featuresArray.length; i++) {
     const featuresElement = document.createElement('li');
     featuresElement.classList.add('popup__feature');
-    featuresElement.classList.add('popup__feature' + '--' + features[i]);
-    featuresItems.appendChild(featuresElement);
+    featuresElement.classList.add('popup__feature' + '--' + featuresArray[i]);
+    featureItems.appendChild(featuresElement);
   }
-  return featuresItems;
+  return featureItems;
 }
-// вот этого тут явно не хватало
-const getPhotoItems = (photos) => {
+
+const renderPhotoItems = (photos) => {
   const photoItems = document.createDocumentFragment();
   for (let i = 0; i < photos.length; i++) {
     const photo = document.createElement('img');
@@ -48,7 +83,6 @@ const getPhotoItems = (photos) => {
 
 const getAdvertisementCard = (advertisement) => {
   const advertisementCard = advertisementCardTemplate.cloneNode(true);
-
   const avatar = advertisementCard.querySelector('.popup__avatar');
   const title = advertisementCard.querySelector('.popup__title');
   const adress = advertisementCard.querySelector('.popup__text--address');
@@ -60,43 +94,16 @@ const getAdvertisementCard = (advertisement) => {
   const description = advertisementCard.querySelector('.popup__description');
   const photos = advertisementCard.querySelector('.popup__photos');
 
-  checkData(avatar, advertisement.author);
-  avatar.src = advertisement.author;
-
-  checkData(title, advertisement.offer.title);
-  title.textContent = advertisement.offer.title;
-
-  checkData(adress, advertisement.offer.description);
-  adress.textContent = advertisement.offer.description;
-
-  checkData(price, advertisement.offer.price);
-  price.textContent = advertisement.offer.price;
-
-  checkData(type, advertisement.offer.type)
-  type.textContent = HOUSING_TYPE_NAMES[advertisement.offer.type];
-
-  checkData(capacity, advertisement.offer.rooms);
-  checkData(capacity, advertisement.offer.guests);
-  const capacityText = advertisement.offer.rooms + ' комнат для ' + advertisement.offer.guests + ' гостей';
-  capacity.textContent = capacityText;
-
-  checkData(time, advertisement.offer.checkin);
-  checkData(time, advertisement.offer.checkout);
-  const timeText = 'Заезд после ' + advertisement.offer.checkin + ', Выезд до ' + advertisement.offer.checkout;
-  time.textContent = timeText;
-
-  checkData(features, advertisement.offer.features);
-  checkDataArray(features, advertisement.offer.features);
-  features.textContent = '';
-  features.appendChild(getFeatureItems(advertisement.offer.features));
-
-  checkData(description, advertisement.offer.description)
-  description.textContent = advertisement.offer.description;
-
-  checkData(photos, advertisement.offer.photos);
-  checkDataArray(photos, advertisement.offer.photos);
-  photos.textContent = '';
-  photos.appendChild(getPhotoItems(advertisement.offer.photos));
+  setAdvertisementData(avatar, advertisement.author, setAdvertisementDataSource);
+  setAdvertisementData(title, advertisement.offer.title, setAdvertisementDataText);
+  setAdvertisementData(adress, advertisement.offer.description, setAdvertisementDataText);
+  setAdvertisementData(price, advertisement.offer.price, setAdvertisementDataText);
+  setAdvertisementData(type, HOUSING_TYPE_NAMES[advertisement.offer.type], setAdvertisementDataText);
+  setAdvertisementConcateData(capacity, advertisement.offer.rooms, advertisement.offer.guests, setAdvertisementDataCapacityText);
+  setAdvertisementConcateData(time, advertisement.offer.checkin, advertisement.offer.checkout, setAdvertisementDataTimeText);
+  setAdvertisementArrayData(features, advertisement.offer.features, renderFeatureItems);
+  setAdvertisementData(description, advertisement.offer.description, setAdvertisementDataText);
+  setAdvertisementArrayData(photos, advertisement.offer.photos, renderPhotoItems);
 
   return advertisementCard;
 }
