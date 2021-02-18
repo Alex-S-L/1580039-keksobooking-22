@@ -25,44 +25,45 @@ const setAdvertisementDataTimeText = (element, advertisementDataOne, advertiseme
   element.textContent = 'Заезд после ' + advertisementDataOne + ', Выезд до ' + advertisementDataTwo;
 }
 
-const checkData = (advertisementData) => {
-  if (!advertisementData || (Array.isArray(advertisementData) && !advertisementData.length)) {
-    return true;
-  }
+const isDataEmpty = (advertisementData) => {
+  return (!advertisementData || (Array.isArray(advertisementData) && !advertisementData.length));
 }
 
-const setAdvertisementData = (element, advertisementData, setFunction) => {
-  if (checkData(advertisementData)) {
-    element.style.display = 'none';
+const setAdvertisementData = (element, advertisementData, callback) => {
+  if (isDataEmpty(advertisementData)) {
+    element.classList.add('hidden');
   } else {
-    setFunction(element, advertisementData);
+    element.classList.remove('hidden');
+    callback(element, advertisementData);
   }
 }
 
-const setAdvertisementConcateData = (element, advertisementDataOne, advertisementDataTwo, setFunction) => {
-  if (checkData(advertisementDataOne) || checkData(advertisementDataTwo)) {
-    element.style.display = 'none';
+const setAdvertisementConcateData = (element, advertisementDataOne, advertisementDataTwo, callback) => {
+  if (isDataEmpty(advertisementDataOne) || isDataEmpty(advertisementDataTwo)) {
+    element.classList.add('hidden');
   } else {
-    setFunction(element, advertisementDataOne, advertisementDataTwo);
+    element.classList.remove('hidden');
+    callback(element, advertisementDataOne, advertisementDataTwo);
   }
 }
 
-const setAdvertisementArrayData = (element, arrayData, setFunction) => {
+const setAdvertisementDatas = (element, datas, callback) => {
   element.textContent = '';
-  if (checkData(arrayData)) {
-    element.style.display = 'none';
+  if (isDataEmpty(datas)) {
+    element.classList.add('hidden');
   } else {
-    element.appendChild(setFunction(arrayData))
+    element.classList.remove('hidden');
+    element.appendChild(callback(datas))
   }
 }
 
-const renderFeatureItems = (featuresArray) => {
+const renderFeatureItems = (features) => {
   const featureItems = document.createDocumentFragment() ;
-  for (let i = 0; i < featuresArray.length; i++) {
-    const featuresElement = document.createElement('li');
-    featuresElement.classList.add('popup__feature');
-    featuresElement.classList.add('popup__feature' + '--' + featuresArray[i]);
-    featureItems.appendChild(featuresElement);
+  for (let i = 0; i < features.length; i++) {
+    const featureElement = document.createElement('li');
+    featureElement.classList.add('popup__feature');
+    featureElement.classList.add('popup__feature' + '--' + features[i]);
+    featureItems.appendChild(featureElement);
   }
   return featureItems;
 }
@@ -70,13 +71,13 @@ const renderFeatureItems = (featuresArray) => {
 const renderPhotoItems = (photos) => {
   const photoItems = document.createDocumentFragment();
   for (let i = 0; i < photos.length; i++) {
-    const photo = document.createElement('img');
-    photo.classList.add('.popup__photo');
-    photo.src = photos[i];
-    photo.width = 45;
-    photo.height = 45;
-    photo.alt = 'Фотография жилья'
-    photoItems.appendChild(photo);
+    const photoElement = document.createElement('img');
+    photoElement.classList.add('.popup__photo');
+    photoElement.src = photos[i];
+    photoElement.width = 45;
+    photoElement.height = 45;
+    photoElement.alt = 'Фотография жилья'
+    photoItems.appendChild(photoElement);
   }
   return photoItems;
 }
@@ -101,9 +102,9 @@ const getAdvertisementCard = (advertisement) => {
   setAdvertisementData(type, HOUSING_TYPE_NAMES[advertisement.offer.type], setAdvertisementDataText);
   setAdvertisementConcateData(capacity, advertisement.offer.rooms, advertisement.offer.guests, setAdvertisementDataCapacityText);
   setAdvertisementConcateData(time, advertisement.offer.checkin, advertisement.offer.checkout, setAdvertisementDataTimeText);
-  setAdvertisementArrayData(features, advertisement.offer.features, renderFeatureItems);
+  setAdvertisementDatas(features, advertisement.offer.features, renderFeatureItems);
   setAdvertisementData(description, advertisement.offer.description, setAdvertisementDataText);
-  setAdvertisementArrayData(photos, advertisement.offer.photos, renderPhotoItems);
+  setAdvertisementDatas(photos, advertisement.offer.photos, renderPhotoItems);
 
   return advertisementCard;
 }
