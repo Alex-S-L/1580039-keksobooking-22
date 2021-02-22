@@ -5,9 +5,8 @@ const HOUSING_TYPE_NAMES = {
   house: 'Дом',
   palace: 'Дворец',
 };
-const mapCanvas = document.querySelector('.map__canvas');
 const advertisementCardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const advertisement = getAdvertisement();
+// const advertisement = getAdvertisement();
 
 const setAdvertisementDataSource = (element, advertisementData) => {
   element.src = advertisementData;
@@ -108,7 +107,5 @@ const getAdvertisementCard = (advertisement) => {
 
   return advertisementCard;
 }
-
-const advertisementCard = getAdvertisementCard(advertisement);
-
-mapCanvas.appendChild(advertisementCard);
+// const advertisementCard = getAdvertisementCard(advertisement);
+export {getAdvertisementCard, getAdvertisement}

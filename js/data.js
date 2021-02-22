@@ -40,7 +40,7 @@ const getLocation = () => {
     y: getRandomFloat(139.7, 139.8, 5),
   }
 }
-// Собираем всё в один объект
+
 const getAdvertisement = () => {
   return {
     author: 'img/avatars/user0' + getRandomNumber(1, 8) + '.png',
@@ -48,12 +48,13 @@ const getAdvertisement = () => {
     location: getLocation(),
   }
 }
-// За ненадобностью пока закоменчу, а то линтер ругается.
-// const getAdvertisements = (count) => {
-//   for (let i = 0; i < count; i++) {
-//     advertisements.push(getAdvertisement());
-//   }
-//   return advertisements;
-// }
 
-export {getAdvertisement};
+const getAdvertisements = (quantity) => {
+  let advertisementsList = []
+  for (let i = 0; i < quantity; i++) {
+    advertisementsList.push(getAdvertisement())
+  }
+  return advertisementsList;
+}
+
+export {getAdvertisement, getAdvertisements};
