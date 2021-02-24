@@ -1,9 +1,9 @@
 /* global L:readonly */
 import {getAdvertisementCard} from './card.js';
 import {getAdvertisements} from './data.js';
-import {onMapLoad} from './form-access.js'
+import {toggleFormState} from './form-access.js'
 import {address} from './form.js'
-const TOKIO__COORDINATES = {
+const TOKIO_COORDINATES = {
   lat: 35.68742,
   lng: 139.77356,
 };
@@ -17,9 +17,13 @@ const pinSize = [50, 50];
 const pinAnchor = [pinSize[0] / 2, pinSize[1]];
 const advertisementCount = 10;
 const advertisements = getAdvertisements(advertisementCount);
+
+const mapLoadHandler = () => {
+  toggleFormState()
+}
 const map = L.map('map-canvas')
-  .on('load', onMapLoad)
-  .setView(TOKIO__COORDINATES, initialScale);
+  .on('load', mapLoadHandler)
+  .setView(TOKIO_COORDINATES, initialScale);
 const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -50,15 +54,18 @@ mainMarker.addTo(map);
 const concateCoordinates = (coordinates) => {
   coordinates.lat = coordinates.lat.toFixed(coordinatesPrecision);
   coordinates.lng = coordinates.lng.toFixed(coordinatesPrecision);
-  return 'lat: ' + coordinates.lat + ' ' + 'lng: ' +coordinates.lng;
+  // Вспомнил что хотел спросить. У меня везде конкатенация, если я тут использу
+  // интерполяцию, то не нарушу ли я критерий Д12 ?
+  // https://up.htmlacademy.ru/javascript/22/criteries#d7
+  return `${coordinates.lat} ${coordinates.lng}`;
 }
-const changeCoordinates = () => {
+
+const addressHandler = () => {
   mainMarkerCoordinates = mainMarker.getLatLng()
   address.value = concateCoordinates(mainMarkerCoordinates)
 }
 address.value = concateCoordinates(mainMarkerCoordinates)
-mainMarker.on('moveend', changeCoordinates)
-
+mainMarker.on('moveend', addressHandler)
 advertisements.forEach((item) => {
   let {location: {x, y}} = item
   const marker = L.marker(

@@ -1,12 +1,13 @@
 import {getAdvertisement} from './data.js';
+// А не является ли это перечислением из критерия Б8 https://up.htmlacademy.ru/javascript/22/criteries#b8 ?
 const HOUSING_TYPE_NAMES = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
   palace: 'Дворец',
 };
+
 const advertisementCardTemplate = document.querySelector('#card').content.querySelector('.popup');
-// const advertisement = getAdvertisement();
 
 const setAdvertisementDataSource = (element, advertisementData) => {
   element.src = advertisementData;
@@ -52,32 +53,32 @@ const setAdvertisementDatas = (element, datas, callback) => {
     element.classList.add('hidden');
   } else {
     element.classList.remove('hidden');
-    element.appendChild(callback(datas))
+    element.appendChild(callback(datas));
   }
 }
 
 const renderFeatureItems = (features) => {
   const featureItems = document.createDocumentFragment() ;
-  for (let i = 0; i < features.length; i++) {
+  features.forEach((feature) => {
     const featureElement = document.createElement('li');
     featureElement.classList.add('popup__feature');
-    featureElement.classList.add('popup__feature' + '--' + features[i]);
+    featureElement.classList.add('popup__feature' + '--' + feature);
     featureItems.appendChild(featureElement);
-  }
+  });
   return featureItems;
 }
 
 const renderPhotoItems = (photos) => {
   const photoItems = document.createDocumentFragment();
-  for (let i = 0; i < photos.length; i++) {
+  photos.forEach((photo) => {
     const photoElement = document.createElement('img');
     photoElement.classList.add('.popup__photo');
-    photoElement.src = photos[i];
+    photoElement.src = photo;
     photoElement.width = 45;
     photoElement.height = 45;
-    photoElement.alt = 'Фотография жилья'
+    photoElement.alt = 'Фотография жилья';
     photoItems.appendChild(photoElement);
-  }
+  });
   return photoItems;
 }
 
@@ -107,5 +108,5 @@ const getAdvertisementCard = (advertisement) => {
 
   return advertisementCard;
 }
-// const advertisementCard = getAdvertisementCard(advertisement);
+
 export {getAdvertisementCard, getAdvertisement}

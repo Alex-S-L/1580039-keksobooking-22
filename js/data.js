@@ -1,6 +1,5 @@
 import {getRandomNumber, getRandomFloat} from './util.js';
 
-// const advertisements = []; /*Не пригодился. Пока закоменчу.*/
 const TYPES_OF_HOUSING = ['bungalow', 'flat', 'house', 'palace'];
 const TIME_OF_CHECKIN = ['12.00', '13.00', '14.00'];
 const TIME_OF_CHECKOUT = ['12.00', '13.00', '14.00'];
