@@ -1,40 +1,29 @@
-// Не знаю что тут лучше сделать. То ли импортировать form, то ли заново найти.
-// Пока решил его найти.
 const form = document.querySelector('.ad-form');
-const formFieldsets = form.children;
+const formFieldsets = form.querySelectorAll('.ad-form__element', '.ad-form-header');
 const mapFilterBox = document.querySelector('.map__filters');
-const mapFilters = mapFilterBox.children;
-// .childen возвращает HTML-collection, у которой нет метода .forEach
-// .querySelectorAll возвращает NodeList, у которого есть .forEach
-// Моожно сделать финт ушами как в примере ниже, или привести всё к массиву,
-// но не знаю стоит ли оно того.
-
-// const switchElementsDisability = (elements) => {
-//   Array.prototype.forEach.call(elements, (item) => {
-//     item.disabled = !item.disabled;
-//   })
-// }
+const mapFilters = mapFilterBox.querySelectorAll('.map__filter', '.map__features');
+const formDisabledClass = 'ad-form--disabled';
 
 const switchAccessClass = (element) => {
-  (element.classList.contains('ad-form--disabled')) ?
-    element.classList.remove('ad-form--disabled') :
-    element.classList.add('ad-form--disabled');
+  (element.classList.contains(formDisabledClass)) ?
+    element.classList.remove(formDisabledClass) :
+    element.classList.add(formDisabledClass);
 }
 
 const switchElementsDisability = (elements) => {
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].disabled = !elements[i].disabled;
-  }
+  elements.forEach((element) => {
+    element.disabled = !element.disabled;
+  })
 }
 
-const accessHandler = (element, elements) => {
+const switchFormAccess = (element, elements) => {
   switchAccessClass(element);
   switchElementsDisability(elements);
 }
 
 const toggleFormState = () => {
-  accessHandler(form, formFieldsets);
-  accessHandler(mapFilterBox, mapFilters);
+  switchFormAccess(form, formFieldsets);
+  switchFormAccess(mapFilterBox, mapFilters);
 }
 
 toggleFormState();

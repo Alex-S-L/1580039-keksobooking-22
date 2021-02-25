@@ -1,5 +1,4 @@
 import {getAdvertisement} from './data.js';
-// А не является ли это перечислением из критерия Б8 https://up.htmlacademy.ru/javascript/22/criteries#b8 ?
 const HOUSING_TYPE_NAMES = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -38,7 +37,7 @@ const setAdvertisementData = (element, advertisementData, callback) => {
   }
 }
 
-const setAdvertisementConcateData = (element, advertisementDataOne, advertisementDataTwo, callback) => {
+const setAdvertisementConcatenatedData = (element, advertisementDataOne, advertisementDataTwo, callback) => {
   if (isDataEmpty(advertisementDataOne) || isDataEmpty(advertisementDataTwo)) {
     element.classList.add('hidden');
   } else {
@@ -47,13 +46,13 @@ const setAdvertisementConcateData = (element, advertisementDataOne, advertisemen
   }
 }
 
-const setAdvertisementDatas = (element, datas, callback) => {
+const setAdvertisementDataList = (element, data, callback) => {
   element.textContent = '';
-  if (isDataEmpty(datas)) {
+  if (isDataEmpty(data)) {
     element.classList.add('hidden');
   } else {
     element.classList.remove('hidden');
-    element.appendChild(callback(datas));
+    element.appendChild(callback(data));
   }
 }
 
@@ -100,11 +99,11 @@ const getAdvertisementCard = (advertisement) => {
   setAdvertisementData(adress, advertisement.offer.description, setAdvertisementDataText);
   setAdvertisementData(price, advertisement.offer.price, setAdvertisementDataText);
   setAdvertisementData(type, HOUSING_TYPE_NAMES[advertisement.offer.type], setAdvertisementDataText);
-  setAdvertisementConcateData(capacity, advertisement.offer.rooms, advertisement.offer.guests, setAdvertisementDataCapacityText);
-  setAdvertisementConcateData(time, advertisement.offer.checkin, advertisement.offer.checkout, setAdvertisementDataTimeText);
-  setAdvertisementDatas(features, advertisement.offer.features, renderFeatureItems);
+  setAdvertisementConcatenatedData(capacity, advertisement.offer.rooms, advertisement.offer.guests, setAdvertisementDataCapacityText);
+  setAdvertisementConcatenatedData(time, advertisement.offer.checkin, advertisement.offer.checkout, setAdvertisementDataTimeText);
+  setAdvertisementDataList(features, advertisement.offer.features, renderFeatureItems);
   setAdvertisementData(description, advertisement.offer.description, setAdvertisementDataText);
-  setAdvertisementDatas(photos, advertisement.offer.photos, renderPhotoItems);
+  setAdvertisementDataList(photos, advertisement.offer.photos, renderPhotoItems);
 
   return advertisementCard;
 }

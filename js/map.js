@@ -54,9 +54,6 @@ mainMarker.addTo(map);
 const concateCoordinates = (coordinates) => {
   coordinates.lat = coordinates.lat.toFixed(coordinatesPrecision);
   coordinates.lng = coordinates.lng.toFixed(coordinatesPrecision);
-  // Вспомнил что хотел спросить. У меня везде конкатенация, если я тут использу
-  // интерполяцию, то не нарушу ли я критерий Д12 ?
-  // https://up.htmlacademy.ru/javascript/22/criteries#d7
   return `${coordinates.lat} ${coordinates.lng}`;
 }
 
