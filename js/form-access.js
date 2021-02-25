@@ -2,12 +2,12 @@ const form = document.querySelector('.ad-form');
 const formFieldsets = form.querySelectorAll('.ad-form__element', '.ad-form-header');
 const mapFilterBox = document.querySelector('.map__filters');
 const mapFilters = mapFilterBox.querySelectorAll('.map__filter', '.map__features');
-const formDisabledClass = 'ad-form--disabled';
+const FORM_DISABLED_CLASS = 'ad-form--disabled';
 
 const switchAccessClass = (element) => {
-  (element.classList.contains(formDisabledClass)) ?
-    element.classList.remove(formDisabledClass) :
-    element.classList.add(formDisabledClass);
+  (element.classList.contains(FORM_DISABLED_CLASS)) ?
+    element.classList.remove(FORM_DISABLED_CLASS) :
+    element.classList.add(FORM_DISABLED_CLASS);
 }
 
 const switchElementsDisability = (elements) => {
