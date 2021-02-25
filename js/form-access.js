@@ -1,36 +1,31 @@
 const form = document.querySelector('.ad-form');
-const formFieldsets = form.children;
+const formFieldsets = form.querySelectorAll('.ad-form__element', '.ad-form-header');
 const mapFilterBox = document.querySelector('.map__filters');
-const mapFilters = mapFilterBox.children;
+const mapFilters = mapFilterBox.querySelectorAll('.map__filter', '.map__features');
+const FORM_DISABLED_CLASS = 'ad-form--disabled';
 
 const switchAccessClass = (element) => {
-  if (element.classList.contains('ad-form--disabled')) {
-    element.classList.remove('ad-form--disabled');
-  } else {
-    element.classList.add('ad-form--disabled');
-  }
+  (element.classList.contains(FORM_DISABLED_CLASS)) ?
+    element.classList.remove(FORM_DISABLED_CLASS) :
+    element.classList.add(FORM_DISABLED_CLASS);
 }
 
 const switchElementsDisability = (elements) => {
-  for (let i = 0; i < elements.length; i++) {
-    if (elements[i].hasAttribute('disabled')) {
-      elements[i].removeAttribute('disabled', 'disabled')
-    } else {
-      elements[i].setAttribute('disabled', 'disabled');
-    }
-  }
+  elements.forEach((element) => {
+    element.disabled = !element.disabled;
+  })
 }
 
-const accessHandler = (element, elements) => {
+const switchFormAccess = (element, elements) => {
   switchAccessClass(element);
   switchElementsDisability(elements);
 }
 
-const onMapLoad = () => {
-  accessHandler(form, formFieldsets);
-  accessHandler(mapFilterBox, mapFilters);
+const toggleFormState = () => {
+  switchFormAccess(form, formFieldsets);
+  switchFormAccess(mapFilterBox, mapFilters);
 }
 
-onMapLoad();
+toggleFormState();
 
-export {onMapLoad};
+export {toggleFormState};

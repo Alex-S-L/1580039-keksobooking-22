@@ -5,8 +5,8 @@ const HOUSING_TYPE_NAMES = {
   house: 'Дом',
   palace: 'Дворец',
 };
+
 const advertisementCardTemplate = document.querySelector('#card').content.querySelector('.popup');
-// const advertisement = getAdvertisement();
 
 const setAdvertisementDataSource = (element, advertisementData) => {
   element.src = advertisementData;
@@ -37,7 +37,7 @@ const setAdvertisementData = (element, advertisementData, callback) => {
   }
 }
 
-const setAdvertisementConcateData = (element, advertisementDataOne, advertisementDataTwo, callback) => {
+const setAdvertisementConcatenatedData = (element, advertisementDataOne, advertisementDataTwo, callback) => {
   if (isDataEmpty(advertisementDataOne) || isDataEmpty(advertisementDataTwo)) {
     element.classList.add('hidden');
   } else {
@@ -46,38 +46,38 @@ const setAdvertisementConcateData = (element, advertisementDataOne, advertisemen
   }
 }
 
-const setAdvertisementDatas = (element, datas, callback) => {
+const setAdvertisementDataList = (element, data, callback) => {
   element.textContent = '';
-  if (isDataEmpty(datas)) {
+  if (isDataEmpty(data)) {
     element.classList.add('hidden');
   } else {
     element.classList.remove('hidden');
-    element.appendChild(callback(datas))
+    element.appendChild(callback(data));
   }
 }
 
 const renderFeatureItems = (features) => {
   const featureItems = document.createDocumentFragment() ;
-  for (let i = 0; i < features.length; i++) {
+  features.forEach((feature) => {
     const featureElement = document.createElement('li');
     featureElement.classList.add('popup__feature');
-    featureElement.classList.add('popup__feature' + '--' + features[i]);
+    featureElement.classList.add('popup__feature' + '--' + feature);
     featureItems.appendChild(featureElement);
-  }
+  });
   return featureItems;
 }
 
 const renderPhotoItems = (photos) => {
   const photoItems = document.createDocumentFragment();
-  for (let i = 0; i < photos.length; i++) {
+  photos.forEach((photo) => {
     const photoElement = document.createElement('img');
     photoElement.classList.add('.popup__photo');
-    photoElement.src = photos[i];
+    photoElement.src = photo;
     photoElement.width = 45;
     photoElement.height = 45;
-    photoElement.alt = 'Фотография жилья'
+    photoElement.alt = 'Фотография жилья';
     photoItems.appendChild(photoElement);
-  }
+  });
   return photoItems;
 }
 
@@ -99,13 +99,13 @@ const getAdvertisementCard = (advertisement) => {
   setAdvertisementData(adress, advertisement.offer.description, setAdvertisementDataText);
   setAdvertisementData(price, advertisement.offer.price, setAdvertisementDataText);
   setAdvertisementData(type, HOUSING_TYPE_NAMES[advertisement.offer.type], setAdvertisementDataText);
-  setAdvertisementConcateData(capacity, advertisement.offer.rooms, advertisement.offer.guests, setAdvertisementDataCapacityText);
-  setAdvertisementConcateData(time, advertisement.offer.checkin, advertisement.offer.checkout, setAdvertisementDataTimeText);
-  setAdvertisementDatas(features, advertisement.offer.features, renderFeatureItems);
+  setAdvertisementConcatenatedData(capacity, advertisement.offer.rooms, advertisement.offer.guests, setAdvertisementDataCapacityText);
+  setAdvertisementConcatenatedData(time, advertisement.offer.checkin, advertisement.offer.checkout, setAdvertisementDataTimeText);
+  setAdvertisementDataList(features, advertisement.offer.features, renderFeatureItems);
   setAdvertisementData(description, advertisement.offer.description, setAdvertisementDataText);
-  setAdvertisementDatas(photos, advertisement.offer.photos, renderPhotoItems);
+  setAdvertisementDataList(photos, advertisement.offer.photos, renderPhotoItems);
 
   return advertisementCard;
 }
-// const advertisementCard = getAdvertisementCard(advertisement);
+
 export {getAdvertisementCard, getAdvertisement}
