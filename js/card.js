@@ -94,7 +94,7 @@ const getAdvertisementCard = (advertisement) => {
   const description = advertisementCard.querySelector('.popup__description');
   const photos = advertisementCard.querySelector('.popup__photos');
 
-  setAdvertisementData(avatar, advertisement.author, setAdvertisementDataSource);
+  setAdvertisementData(avatar, advertisement.author.avatar, setAdvertisementDataSource);
   setAdvertisementData(title, advertisement.offer.title, setAdvertisementDataText);
   setAdvertisementData(adress, advertisement.offer.description, setAdvertisementDataText);
   setAdvertisementData(price, advertisement.offer.price, setAdvertisementDataText);

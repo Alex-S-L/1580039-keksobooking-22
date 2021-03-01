@@ -1,6 +1,5 @@
 /* global L:readonly */
 import {getAdvertisementCard} from './card.js';
-// import {getAdvertisements} from './data.js';
 import {toggleFormState} from './form-access.js'
 import {getData} from './server-interaction.js'
 const address = document.querySelector('#address');
@@ -12,11 +11,14 @@ let mainMarkerCoordinates = {
   lat: 35.68742,
   lng: 139.77356,
 };
+const mainMarkerStartCoordinates = {
+  lat: 35.68742,
+  lng: 139.77356,
+};
 const initialScale = 10;
 const coordinatesPrecision = 5;
 const pinSize = [50, 50];
 const pinAnchor = [pinSize[0] / 2, pinSize[1]];
-// const advertisementCount = 10;
 
 const mapLoadHandler = () => {
   toggleFormState()
@@ -40,7 +42,7 @@ const ordinaryMarkerPin = L.icon({
   iconUrl: '../img/pin.svg',
   iconSize: pinSize,
   iconAnchor: pinAnchor,
-})
+});
 
 const mainMarker = L.marker(
   mainMarkerCoordinates,
@@ -58,12 +60,11 @@ const concateCoordinates = (coordinates) => {
 }
 
 const addressHandler = () => {
-  mainMarkerCoordinates = mainMarker.getLatLng()
-  address.value = concateCoordinates(mainMarkerCoordinates)
+  mainMarkerCoordinates = mainMarker.getLatLng();
+  address.value = concateCoordinates(mainMarkerCoordinates);
 }
-address.value = concateCoordinates(mainMarkerCoordinates)
-mainMarker.on('moveend', addressHandler)
-
+address.value = concateCoordinates(mainMarkerCoordinates);
+mainMarker.on('moveend', addressHandler);
 
 const renderMarkers = (advertisements) => {
   advertisements.forEach((advertisement) => {
@@ -78,12 +79,18 @@ const renderMarkers = (advertisements) => {
         icon: ordinaryMarkerPin,
       },
     )
-    marker.addTo(map)
-    marker.bindPopup(getAdvertisementCard(advertisement))
+    marker.addTo(map);
+    marker.bindPopup(getAdvertisementCard(advertisement));
   })
 }
 
 const setMarkers = () => {
-  getData(renderMarkers)
+  getData(renderMarkers);
 }
-setMarkers()
+setMarkers();
+
+const resetMainMarkerCoordinates = () => {
+  mainMarker.setLatLng(mainMarkerStartCoordinates)
+}
+
+export {resetMainMarkerCoordinates, mainMarkerStartCoordinates, concateCoordinates}

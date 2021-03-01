@@ -1,4 +1,5 @@
 import {sendData} from './server-interaction.js'
+import {resetMainMarkerCoordinates, mainMarkerStartCoordinates, concateCoordinates} from './map.js'
 const form = document.querySelector('.ad-form');
 const housingType = form.querySelector('#type');
 const housingPrice = form.querySelector('#price');
@@ -7,6 +8,7 @@ const checkinTime = form.querySelector('#timein');
 const checkoutTime = form.querySelector('#timeout');
 const roomNumber = form.querySelector('#room_number');
 const capacity = form.querySelector('#capacity');
+const address = form.querySelector('#address');
 const errorMessage = document.querySelector('#error').content.querySelector('.error');
 const successMessage = document.querySelector('#success').content.querySelector('.success');
 const main = document.querySelector('main')
@@ -66,9 +68,6 @@ const escapeKeydownHandler = (evt) => {
 
 const showFailPopup = () => {
   main.appendChild(errorMessage);
-  /*Я подумал, что если по условию у нас клик в любое место экрана
-   должен удалять меседж, то отдельный обработчик для кнопки и не
-   нужен, ибо кнопка - это вообще самое любое место экрана из всех любых*/
   window.addEventListener('click', randomPlaceClickHandler);
   window.addEventListener('keydown', escapeKeydownHandler);
 }
@@ -77,6 +76,8 @@ const showSuccessPopup = () => {
   main.appendChild(successMessage);
   setTimeout(() => {main.removeChild(successMessage)}, 1000);
   form.reset();
+  resetMainMarkerCoordinates();
+  address.value = concateCoordinates(mainMarkerStartCoordinates);
 }
 
 const submitHandler = (evt) => {
