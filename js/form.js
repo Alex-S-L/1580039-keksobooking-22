@@ -1,5 +1,6 @@
+import {sendData} from './server-interaction.js'
+import {resetMainMarkerCoordinates, mainMarkerStartCoordinates, concateCoordinates} from './map.js'
 const form = document.querySelector('.ad-form');
-const address = form.querySelector('#address');
 const housingType = form.querySelector('#type');
 const housingPrice = form.querySelector('#price');
 const timeField = form.querySelector('.ad-form__element--time');
@@ -7,6 +8,11 @@ const checkinTime = form.querySelector('#timein');
 const checkoutTime = form.querySelector('#timeout');
 const roomNumber = form.querySelector('#room_number');
 const capacity = form.querySelector('#capacity');
+const address = form.querySelector('#address');
+const errorMessage = document.querySelector('#error').content.querySelector('.error');
+const successMessage = document.querySelector('#success').content.querySelector('.success');
+const main = document.querySelector('main')
+
 const MIN_PRICES = {
   bungalow: 0,
   flat: 1000,
@@ -48,9 +54,40 @@ const capacityHandler = () => {
   setAccomodationValidity();
 }
 
-roomNumber.addEventListener('change', roomsHandler)
-capacity.addEventListener('change', capacityHandler)
+const randomPlaceClickHandler = () => {
+  main.removeChild(errorMessage);
+  window.removeEventListener('click', randomPlaceClickHandler);
+}
+
+const escapeKeydownHandler = (evt) => {
+  if (evt.keyCode === 27) {
+    main.removeChild(errorMessage);
+    window.removeEventListener('keydown', escapeKeydownHandler);
+  }
+}
+
+const showFailPopup = () => {
+  main.appendChild(errorMessage);
+  window.addEventListener('click', randomPlaceClickHandler);
+  window.addEventListener('keydown', escapeKeydownHandler);
+}
+
+const showSuccessPopup = () => {
+  main.appendChild(successMessage);
+  setTimeout(() => {main.removeChild(successMessage)}, 1000);
+  form.reset();
+  resetMainMarkerCoordinates();
+  address.value = concateCoordinates(mainMarkerStartCoordinates);
+}
+
+const submitHandler = (evt) => {
+  evt.preventDefault();
+  const currentFormData = new FormData(evt.target);
+  sendData(showSuccessPopup, showFailPopup, currentFormData);
+}
+
+roomNumber.addEventListener('change', roomsHandler);
+capacity.addEventListener('change', capacityHandler);
 housingType.addEventListener('change', minPricesHandler);
 timeField.addEventListener('change', timeFieldHandler);
-
-export {address};
+form.addEventListener('submit', submitHandler);

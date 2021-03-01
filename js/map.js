@@ -1,8 +1,8 @@
 /* global L:readonly */
 import {getAdvertisementCard} from './card.js';
-import {getAdvertisements} from './data.js';
 import {toggleFormState} from './form-access.js'
-import {address} from './form.js'
+import {getData} from './server-interaction.js'
+const address = document.querySelector('#address');
 const TOKIO_COORDINATES = {
   lat: 35.68742,
   lng: 139.77356,
@@ -11,12 +11,14 @@ let mainMarkerCoordinates = {
   lat: 35.68742,
   lng: 139.77356,
 };
-const initialScale = 13;
+const mainMarkerStartCoordinates = {
+  lat: 35.68742,
+  lng: 139.77356,
+};
+const initialScale = 10;
 const coordinatesPrecision = 5;
 const pinSize = [50, 50];
 const pinAnchor = [pinSize[0] / 2, pinSize[1]];
-const advertisementCount = 10;
-const advertisements = getAdvertisements(advertisementCount);
 
 const mapLoadHandler = () => {
   toggleFormState()
@@ -40,7 +42,7 @@ const ordinaryMarkerPin = L.icon({
   iconUrl: '../img/pin.svg',
   iconSize: pinSize,
   iconAnchor: pinAnchor,
-})
+});
 
 const mainMarker = L.marker(
   mainMarkerCoordinates,
@@ -58,23 +60,37 @@ const concateCoordinates = (coordinates) => {
 }
 
 const addressHandler = () => {
-  mainMarkerCoordinates = mainMarker.getLatLng()
-  address.value = concateCoordinates(mainMarkerCoordinates)
+  mainMarkerCoordinates = mainMarker.getLatLng();
+  address.value = concateCoordinates(mainMarkerCoordinates);
 }
-address.value = concateCoordinates(mainMarkerCoordinates)
-mainMarker.on('moveend', addressHandler)
-advertisements.forEach((item) => {
-  let {location: {x, y}} = item
-  const marker = L.marker(
-    {
-      lat: x,
-      lng: y,
-    },
-    {
-      draggable: false,
-      icon: ordinaryMarkerPin,
-    },
-  )
-  marker.addTo(map)
-  marker.bindPopup(getAdvertisementCard(item))
-})
+address.value = concateCoordinates(mainMarkerCoordinates);
+mainMarker.on('moveend', addressHandler);
+
+const renderMarkers = (advertisements) => {
+  advertisements.forEach((advertisement) => {
+    let {location: {lat: x, lng: y}} = advertisement
+    const marker = L.marker(
+      {
+        lat: x,
+        lng: y,
+      },
+      {
+        draggable: false,
+        icon: ordinaryMarkerPin,
+      },
+    )
+    marker.addTo(map);
+    marker.bindPopup(getAdvertisementCard(advertisement));
+  })
+}
+
+const setMarkers = () => {
+  getData(renderMarkers);
+}
+setMarkers();
+
+const resetMainMarkerCoordinates = () => {
+  mainMarker.setLatLng(mainMarkerStartCoordinates)
+}
+
+export {resetMainMarkerCoordinates, mainMarkerStartCoordinates, concateCoordinates}
