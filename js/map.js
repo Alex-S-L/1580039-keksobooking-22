@@ -1,7 +1,8 @@
 /* global L:readonly */
 import {getAdvertisementCard} from './card.js';
-import {toggleFormState} from './form-access.js'
-import {getData} from './server-interaction.js'
+import {toggleFormState} from './form-access.js';
+import {getData} from './server-interaction.js';
+import {filtrateData} from './filter.js';
 const address = document.querySelector('#address');
 const TOKIO_COORDINATES = {
   lat: 35.68742,
@@ -15,10 +16,12 @@ const mainMarkerStartCoordinates = {
   lat: 35.68742,
   lng: 139.77356,
 };
-const initialScale = 10;
+const initialScale = 8;
 const coordinatesPrecision = 5;
 const pinSize = [50, 50];
 const pinAnchor = [pinSize[0] / 2, pinSize[1]];
+const markers = [];
+const markerCount = 10;
 
 const mapLoadHandler = () => {
   toggleFormState()
@@ -66,7 +69,15 @@ const addressHandler = () => {
 address.value = concateCoordinates(mainMarkerCoordinates);
 mainMarker.on('moveend', addressHandler);
 
-const renderMarkers = (advertisements) => {
+const deliteMarkers = (markers) => {
+  markers.forEach((marker) => {
+    marker.remove();
+  })
+  markers.splice(0, markers.length);
+}
+
+const getMarkers = (advertisements) => {
+  deliteMarkers(markers);
   advertisements.forEach((advertisement) => {
     let {location: {lat: x, lng: y}} = advertisement
     const marker = L.marker(
@@ -78,19 +89,32 @@ const renderMarkers = (advertisements) => {
         draggable: false,
         icon: ordinaryMarkerPin,
       },
-    )
-    marker.addTo(map);
+    );
     marker.bindPopup(getAdvertisementCard(advertisement));
+    markers.push(marker);
   })
+  return markers
 }
 
-const setMarkers = () => {
-  getData(renderMarkers);
+const renderMarkers = (advertisements) => {
+  getMarkers(advertisements).forEach((marker) => {
+    marker.addTo(map);
+  });
 }
-setMarkers();
+
+const reRenderMarkers = (advertisements) => {
+  filtrateData(advertisements,markerCount, renderMarkers);
+}
+
+const setMarkers = (advertisements) => {
+  renderMarkers(advertisements);
+  reRenderMarkers(advertisements);
+}
+
+getData(setMarkers);
 
 const resetMainMarkerCoordinates = () => {
-  mainMarker.setLatLng(mainMarkerStartCoordinates)
+  mainMarker.setLatLng(mainMarkerStartCoordinates);
 }
 
 export {resetMainMarkerCoordinates, mainMarkerStartCoordinates, concateCoordinates}

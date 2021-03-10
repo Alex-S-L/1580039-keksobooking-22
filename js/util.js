@@ -20,6 +20,13 @@ const getRandomFloat = (min, max, afterComma) => {
   }
 };
 
+const deliteEmptyItems = (items) => {
+  items = items.filter((item) => {
+    return item !== undefined
+  })
+  return items
+}
+
 const getAlertPopup = (message) => {
   const alertContainer = document.createElement('div')
   alertContainer.style.width = '300px';
@@ -37,4 +44,4 @@ const getAlertPopup = (message) => {
   setTimeout(() => {document.body.removeChild(alertContainer)}, 2000);
 }
 
-export {getRandomFloat, getRandomNumber, getAlertPopup};
+export {getRandomFloat, getRandomNumber, getAlertPopup, deliteEmptyItems};
