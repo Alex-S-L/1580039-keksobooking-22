@@ -2,7 +2,7 @@
 import {getAdvertisementCard} from './card.js';
 import {toggleFormState} from './form-access.js';
 import {getData} from './server-interaction.js';
-import {filtrateData} from './filter.js';
+import {bindFiltrationOnChange} from './filter.js';
 const address = document.querySelector('#address');
 const TOKIO_COORDINATES = {
   lat: 35.68742,
@@ -12,7 +12,7 @@ let mainMarkerCoordinates = {
   lat: 35.68742,
   lng: 139.77356,
 };
-const mainMarkerStartCoordinates = {
+const MAIN_MARKER_START_COORDINATES = {
   lat: 35.68742,
   lng: 139.77356,
 };
@@ -20,8 +20,7 @@ const initialScale = 8;
 const coordinatesPrecision = 5;
 const pinSize = [50, 50];
 const pinAnchor = [pinSize[0] / 2, pinSize[1]];
-const markers = [];
-const markerCount = 10;
+const MARKERS_COUNT = 10;
 
 const mapLoadHandler = () => {
   toggleFormState()
@@ -56,7 +55,7 @@ const mainMarker = L.marker(
 );
 mainMarker.addTo(map);
 
-const concateCoordinates = (coordinates) => {
+const concatenateCoordinates = (coordinates) => {
   coordinates.lat = coordinates.lat.toFixed(coordinatesPrecision);
   coordinates.lng = coordinates.lng.toFixed(coordinatesPrecision);
   return `${coordinates.lat} ${coordinates.lng}`;
@@ -64,20 +63,19 @@ const concateCoordinates = (coordinates) => {
 
 const addressHandler = () => {
   mainMarkerCoordinates = mainMarker.getLatLng();
-  address.value = concateCoordinates(mainMarkerCoordinates);
+  address.value = concatenateCoordinates(mainMarkerCoordinates);
 }
-address.value = concateCoordinates(mainMarkerCoordinates);
+
+const resetMainMarkerCoordinates = () => {
+  mainMarker.setLatLng(MAIN_MARKER_START_COORDINATES);
+}
+address.value = concatenateCoordinates(mainMarkerCoordinates);
 mainMarker.on('moveend', addressHandler);
 
-const deliteMarkers = (markers) => {
-  markers.forEach((marker) => {
-    marker.remove();
-  })
-  markers.splice(0, markers.length);
-}
+const markerGroup = L.layerGroup([]).addTo(map);
 
-const getMarkers = (advertisements) => {
-  deliteMarkers(markers);
+const addMarkers = (advertisements) => {
+  markerGroup.clearLayers()
   advertisements.forEach((advertisement) => {
     let {location: {lat: x, lng: y}} = advertisement
     const marker = L.marker(
@@ -91,30 +89,15 @@ const getMarkers = (advertisements) => {
       },
     );
     marker.bindPopup(getAdvertisementCard(advertisement));
-    markers.push(marker);
+    marker.addTo(markerGroup);
   })
-  return markers
 }
 
-const renderMarkers = (advertisements) => {
-  getMarkers(advertisements).forEach((marker) => {
-    marker.addTo(map);
-  });
+const initMapMarkers = (advertisements) => {
+  addMarkers(advertisements)
+  bindFiltrationOnChange(advertisements, MARKERS_COUNT, addMarkers)
 }
 
-const reRenderMarkers = (advertisements) => {
-  filtrateData(advertisements,markerCount, renderMarkers);
-}
+getData(initMapMarkers);
 
-const setMarkers = (advertisements) => {
-  renderMarkers(advertisements);
-  reRenderMarkers(advertisements);
-}
-
-getData(setMarkers);
-
-const resetMainMarkerCoordinates = () => {
-  mainMarker.setLatLng(mainMarkerStartCoordinates);
-}
-
-export {resetMainMarkerCoordinates, mainMarkerStartCoordinates, concateCoordinates}
+export {resetMainMarkerCoordinates, MAIN_MARKER_START_COORDINATES, concatenateCoordinates}
