@@ -1,8 +1,3 @@
-const filters = document.querySelector('.map__filters');
-const typeFilter = filters.querySelector('#housing-type');
-const priceFilter = filters.querySelector('#housing-price');
-const roomsFilter = filters.querySelector('#housing-rooms');
-const guestsFilter  = filters.querySelector('#housing-guests');
 const PricePoints = {
   LOW: 10000,
   MIDDLE: 50000,
@@ -32,6 +27,11 @@ const GuestsFilterValues = {
   TWO: '2',
   NOT_FOR_GUESTS: '0',
 };
+const filters = document.querySelector('.map__filters');
+const typeFilter = filters.querySelector('#housing-type');
+const priceFilter = filters.querySelector('#housing-price');
+const roomsFilter = filters.querySelector('#housing-rooms');
+const guestsFilter  = filters.querySelector('#housing-guests');
 
 const checkType = ({offer: {type : housingType}}) => {
   const typeFilterValue = typeFilter.value;
@@ -72,9 +72,7 @@ const checkGuests = ({offer: {guests: housingGuests}}) => {
 }
 
 const checkFilters = (item) => {
-  if (checkType(item) && checkPrice(item) && checkRooms(item) && checkGuests(item)) {
-    return item;
-  }
+  return checkType(item) && checkPrice(item) && checkRooms(item) && checkGuests(item)
 }
 
 const bindFiltrationOnChange = (advertisements, markerCount, cb) => {

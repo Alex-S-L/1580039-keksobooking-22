@@ -3,7 +3,6 @@ import {getAdvertisementCard} from './card.js';
 import {toggleFormState} from './form-access.js';
 import {getData} from './server-interaction.js';
 import {bindFiltrationOnChange} from './filter.js';
-const address = document.querySelector('#address');
 const TOKIO_COORDINATES = {
   lat: 35.68742,
   lng: 139.77356,
@@ -16,11 +15,12 @@ const MAIN_MARKER_START_COORDINATES = {
   lat: 35.68742,
   lng: 139.77356,
 };
+const MARKERS_COUNT = 10;
+const address = document.querySelector('#address');
 const initialScale = 8;
 const coordinatesPrecision = 5;
 const pinSize = [50, 50];
 const pinAnchor = [pinSize[0] / 2, pinSize[1]];
-const MARKERS_COUNT = 10;
 
 const mapLoadHandler = () => {
   toggleFormState()
