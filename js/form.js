@@ -1,5 +1,5 @@
 import {sendData} from './server-interaction.js'
-import {resetMainMarkerCoordinates, mainMarkerStartCoordinates, concateCoordinates} from './map.js'
+import {resetMainMarkerCoordinates, MAIN_MARKER_START_COORDINATES, concatenateCoordinates} from './map.js'
 const form = document.querySelector('.ad-form');
 const housingType = form.querySelector('#type');
 const housingPrice = form.querySelector('#price');
@@ -13,16 +13,16 @@ const errorMessage = document.querySelector('#error').content.querySelector('.er
 const successMessage = document.querySelector('#success').content.querySelector('.success');
 const main = document.querySelector('main')
 
-const MIN_PRICES = {
-  bungalow: 0,
-  flat: 1000,
-  house: 5000,
-  palace: 10000,
+const MinPrices = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOUSE: 5000,
+  PALACE: 10000,
 };
 
 const minPricesHandler = () => {
-  housingPrice.min = MIN_PRICES[housingType.value];
-  housingPrice.placeholder = MIN_PRICES[housingType.value];
+  housingPrice.min = MinPrices[housingType.value.toUpperCase()];
+  housingPrice.placeholder = MinPrices[housingType.value.toUpperCase()];
 }
 
 const timeFieldHandler = (evt) => {
@@ -77,7 +77,7 @@ const showSuccessPopup = () => {
   setTimeout(() => {main.removeChild(successMessage)}, 1000);
   form.reset();
   resetMainMarkerCoordinates();
-  address.value = concateCoordinates(mainMarkerStartCoordinates);
+  address.value = concatenateCoordinates(MAIN_MARKER_START_COORDINATES);
 }
 
 const submitHandler = (evt) => {
