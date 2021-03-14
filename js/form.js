@@ -1,5 +1,12 @@
 import {sendData} from './server-interaction.js'
 import {resetMainMarkerCoordinates, MAIN_MARKER_START_COORDINATES, concatenateCoordinates} from './map.js'
+const MinPrices = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOUSE: 5000,
+  PALACE: 10000,
+};
+
 const form = document.querySelector('.ad-form');
 const housingType = form.querySelector('#type');
 const housingPrice = form.querySelector('#price');
@@ -11,14 +18,7 @@ const capacity = form.querySelector('#capacity');
 const address = form.querySelector('#address');
 const errorMessage = document.querySelector('#error').content.querySelector('.error');
 const successMessage = document.querySelector('#success').content.querySelector('.success');
-const main = document.querySelector('main')
-
-const MinPrices = {
-  BUNGALOW: 0,
-  FLAT: 1000,
-  HOUSE: 5000,
-  PALACE: 10000,
-};
+const main = document.querySelector('main');
 
 const minPricesHandler = () => {
   housingPrice.min = MinPrices[housingType.value.toUpperCase()];

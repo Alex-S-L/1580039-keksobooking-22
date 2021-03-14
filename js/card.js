@@ -1,9 +1,9 @@
 import {getAdvertisement} from './data.js';
-const HOUSING_TYPE_NAMES = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
+const HousingTypeNames = {
+  BUNGALOW: 'Бунгало',
+  FLAT: 'Квартира',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
 };
 
 const advertisementCardTemplate = document.querySelector('#card').content.querySelector('.popup');
@@ -98,7 +98,7 @@ const getAdvertisementCard = (advertisement) => {
   setAdvertisementData(title, advertisement.offer.title, setAdvertisementDataText);
   setAdvertisementData(adress, advertisement.offer.description, setAdvertisementDataText);
   setAdvertisementData(price, advertisement.offer.price, setAdvertisementDataText);
-  setAdvertisementData(type, HOUSING_TYPE_NAMES[advertisement.offer.type], setAdvertisementDataText);
+  setAdvertisementData(type, HousingTypeNames[advertisement.offer.type.toUpperCase()], setAdvertisementDataText);
   setAdvertisementConcatenatedData(capacity, advertisement.offer.rooms, advertisement.offer.guests, setAdvertisementDataCapacityText);
   setAdvertisementConcatenatedData(time, advertisement.offer.checkin, advertisement.offer.checkout, setAdvertisementDataTimeText);
   setAdvertisementDataList(features, advertisement.offer.features, renderFeatureItems);
