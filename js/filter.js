@@ -85,27 +85,23 @@ const getChosenFeatures = () => {
   return chosenFeatures;
 }
 
-// const checkFeatures = ({offer: {features: offerFeatures}}, chosenFeatures) => {
-//   // const isContains = chosenFeatures.length <= offerFeatures.length;
-//   // const isMathes = chosenFeatures.every((chosenFeaturesItem) => {
-//   //   return offerFeatures.some((offerFeaturesItem) => {
-//   //     return offerFeaturesItem === chosenFeaturesItem
-//   //   })
-//   // })
-//   // return isContains && isMathes;
-
-// }
-const checkFeatures = ({offer: {features: offerFeatures}}, chosenFeatures) => {
-  const hash = offerFeatures.reduce(function(acc, i) {
-    acc[i] = true; return acc;
+const checkFeatures = ({offer: {features: offerFeatures}}) => {
+  const chosenFeatures = getChosenFeatures()
+  const hash = offerFeatures.reduce((acc, feature) => {
+    acc[feature] = true; return acc;
   }, {});
-  return chosenFeatures.every(function(i) {
-    return i in hash;
+  return chosenFeatures.every((feature) => {
+    return feature in hash;
+  // Подумать как сделать лучше
   });
 };
 
 const checkFilters = (item) => {
-  return checkType(item) && checkPrice(item) && checkRooms(item) && checkGuests(item) && checkFeatures(item, getChosenFeatures())
+  return checkType(item) &&
+  checkPrice(item) &&
+  checkRooms(item) &&
+  checkGuests(item) &&
+  checkFeatures(item);
 }
 
 const filtrationHandler = (advertisements, markerCount, cb) => {
@@ -114,7 +110,11 @@ const filtrationHandler = (advertisements, markerCount, cb) => {
 }
 
 const bindFiltrationOnChange = (advertisements, markerCount, cb) => {
-  filters.addEventListener('change', debounce(filtrationHandler.bind(this, advertisements, markerCount, cb), DEBOUNCE_TIMEOUT));
+  const debounceHandler = debounce(
+    filtrationHandler.bind(this, advertisements, markerCount, cb),
+    DEBOUNCE_TIMEOUT);
+
+  filters.addEventListener('change', debounceHandler);
 }
 
 export {bindFiltrationOnChange}

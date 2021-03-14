@@ -35,16 +35,15 @@ const getAlertPopup = (message) => {
   document.body.appendChild(alertContainer);
   setTimeout(() => {document.body.removeChild(alertContainer)}, 2000);
 }
-/* eslint-disable no-unused-vars */
+
 const debounce = (f, ms) => {
-  let timeout;
   return function() {
     const fnCall = () => {
       f.apply(this, arguments);
     };
     clearTimeout(fnCall);
-    timeout = setTimeout(fnCall, ms);
+    setTimeout(fnCall, ms);
   };
 }
-/* eslint-enable no-unused-vars */
+
 export {getRandomFloat, getRandomNumber, getAlertPopup, debounce};
