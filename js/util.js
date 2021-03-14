@@ -1,4 +1,3 @@
-// Проверка корректности диапазона
 const getCorrectRange = (min, max) => {
   if (min >= 0 && max > min) {
     return true;
@@ -37,4 +36,14 @@ const getAlertPopup = (message) => {
   setTimeout(() => {document.body.removeChild(alertContainer)}, 2000);
 }
 
-export {getRandomFloat, getRandomNumber, getAlertPopup};
+const debounce = (f, ms) => {
+  return function() {
+    const fnCall = () => {
+      f.apply(this, arguments);
+    };
+    clearTimeout(fnCall);
+    setTimeout(fnCall, ms);
+  };
+}
+
+export {getRandomFloat, getRandomNumber, getAlertPopup, debounce};

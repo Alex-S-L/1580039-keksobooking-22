@@ -1,3 +1,4 @@
+import {debounce} from './util.js'
 const PricePoints = {
   LOW: 10000,
   MIDDLE: 50000,
@@ -27,59 +28,93 @@ const GuestsFilterValues = {
   TWO: '2',
   NOT_FOR_GUESTS: '0',
 };
+const DEBOUNCE_TIMEOUT = 500;
+
 const filters = document.querySelector('.map__filters');
 const typeFilter = filters.querySelector('#housing-type');
 const priceFilter = filters.querySelector('#housing-price');
 const roomsFilter = filters.querySelector('#housing-rooms');
 const guestsFilter  = filters.querySelector('#housing-guests');
+const featuresFilters = filters.querySelectorAll('.map__checkbox');
 
-const checkType = ({offer: {type : housingType}}) => {
+const checkType = ({offer: {type : offerType}}) => {
   const typeFilterValue = typeFilter.value;
   const anyValue = typeFilterValue === TypeFilterValues.ANY;
-  const equalValue = housingType === typeFilterValue;
+  const equalValue = offerType === typeFilterValue;
 
   return anyValue || equalValue;
 }
 
-const checkPrice = ({offer: {price : housingPrice}}) => {
+const checkPrice = ({offer: {price : offerPrice}}) => {
   const priceFilterValue = priceFilter.value;
 
   const anyPrice = priceFilterValue === PriceFilterValues.ANY;
-  const lowPrice = priceFilterValue === PriceFilterValues.LOW && housingPrice < PricePoints.LOW;
+  const lowPrice = priceFilterValue === PriceFilterValues.LOW && offerPrice < PricePoints.LOW;
   const middlePrice = priceFilterValue === PriceFilterValues.MIDDLE &&
-  (housingPrice >= PricePoints.LOW && housingPrice < PricePoints.MIDDLE);
-  const highPrice = priceFilterValue === PriceFilterValues.HIGH && housingPrice >= PricePoints.MIDDLE;
+  (offerPrice >= PricePoints.LOW && offerPrice < PricePoints.MIDDLE);
+  const highPrice = priceFilterValue === PriceFilterValues.HIGH && offerPrice >= PricePoints.MIDDLE;
 
   return anyPrice || lowPrice || middlePrice || highPrice;
 }
 
-const checkRooms = ({offer: {rooms: housingRooms}}) => {
+const checkRooms = ({offer: {rooms: offerRooms}}) => {
   const roomsFilterValue = roomsFilter.value;
 
   const anyValue = roomsFilterValue === RoomsFilterValues.ANY;
-  const equalValue = roomsFilterValue === housingRooms.toString();
+  const equalValue = roomsFilterValue === offerRooms.toString();
 
   return anyValue || equalValue;
 }
 
-const checkGuests = ({offer: {guests: housingGuests}}) => {
+const checkGuests = ({offer: {guests: offerGuests}}) => {
   const guestsFilterValue = guestsFilter.value;
 
   const anyValue = guestsFilterValue === GuestsFilterValues.ANY
-  const equalValue = guestsFilterValue === housingGuests.toString()
+  const equalValue = guestsFilterValue === offerGuests.toString()
 
   return anyValue || equalValue;
 }
 
+const getChosenFeatures = () => {
+  const chosenFeatures = []
+  featuresFilters.forEach((feature) => {
+    if (feature.checked) {
+      chosenFeatures.push(feature.value)
+    }
+  })
+  return chosenFeatures;
+}
+
+const checkFeatures = ({offer: {features: offerFeatures}}) => {
+  const chosenFeatures = getChosenFeatures()
+  const hash = offerFeatures.reduce((acc, feature) => {
+    acc[feature] = true; return acc;
+  }, {});
+  return chosenFeatures.every((feature) => {
+    return feature in hash;
+  // Подумать как сделать лучше
+  });
+};
+
 const checkFilters = (item) => {
-  return checkType(item) && checkPrice(item) && checkRooms(item) && checkGuests(item)
+  return checkType(item) &&
+  checkPrice(item) &&
+  checkRooms(item) &&
+  checkGuests(item) &&
+  checkFeatures(item);
+}
+
+const filtrationHandler = (advertisements, markerCount, cb) => {
+  const filteredAdvertisements = advertisements.filter((checkFilters)).slice(0, markerCount);
+  cb(filteredAdvertisements);
 }
 
 const bindFiltrationOnChange = (advertisements, markerCount, cb) => {
-  filters.addEventListener('change', () => {
-    const filteredAdvertisements = advertisements.filter((checkFilters)).slice(0, markerCount)
-    cb(filteredAdvertisements);
-  })
+  const debounceHandler = debounce(
+    filtrationHandler.bind(this, advertisements, markerCount, cb),
+    DEBOUNCE_TIMEOUT);
+
+  filters.addEventListener('change', debounceHandler);
 }
 
 export {bindFiltrationOnChange}
