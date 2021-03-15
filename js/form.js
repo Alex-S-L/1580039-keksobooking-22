@@ -1,5 +1,6 @@
 import {sendData} from './server-interaction.js'
 import {resetMainMarkerCoordinates, MAIN_MARKER_START_COORDINATES, concatenateCoordinates} from './map.js'
+import {previewHandler} from './preview-handler.js'
 const MinPrices = {
   BUNGALOW: 0,
   FLAT: 1000,
@@ -19,6 +20,10 @@ const address = form.querySelector('#address');
 const errorMessage = document.querySelector('#error').content.querySelector('.error');
 const successMessage = document.querySelector('#success').content.querySelector('.success');
 const main = document.querySelector('main');
+const avatarInput = form.querySelector('.ad-form-header__input');
+const roomPhotoInput = form.querySelector('.ad-form__input');
+const avatarPrewiew = form.querySelector('.ad-form-header__preview > img');
+const roomPhotoPrewiew = form.querySelector('.ad-form__photo')
 
 const minPricesHandler = () => {
   housingPrice.min = MinPrices[housingType.value.toUpperCase()];
@@ -90,4 +95,7 @@ roomNumber.addEventListener('change', roomsHandler);
 capacity.addEventListener('change', capacityHandler);
 housingType.addEventListener('change', minPricesHandler);
 timeField.addEventListener('change', timeFieldHandler);
+avatarInput.addEventListener('change', previewHandler(avatarPrewiew));
+roomPhotoInput.addEventListener('change', previewHandler(roomPhotoPrewiew));
 form.addEventListener('submit', submitHandler);
+

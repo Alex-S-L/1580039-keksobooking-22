@@ -23,9 +23,6 @@ const coordinatesPrecision = 5;
 const pinSize = [50, 50];
 const pinAnchor = [pinSize[0] / 2, pinSize[1]];
 
-// const mapLoadHandler = () => {
-//   toggleFormState()
-// }
 const map = L.map('map-canvas');
 const tileLayer = L.tileLayer(/*'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'*/
   'https://tile.thunderforest.com/spinal-map/{z}/{x}/{y}.png',
@@ -34,12 +31,12 @@ const tileLayer = L.tileLayer(/*'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.
   },
 );
 const mainMarkerPin = L.icon({
-  iconUrl: '../img/pins/main-pin.svg',
+  iconUrl: '../img/main-pin.svg',
   iconSize: pinSize,
   iconAnchor: pinAnchor,
 });
 const ordinaryMarkerPin = L.icon({
-  iconUrl: '../img/pins/pin.svg',
+  iconUrl: '../img//pin.svg',
   iconSize: pinSize,
   iconAnchor: pinAnchor,
 });
