@@ -87,12 +87,9 @@ const getChosenFeatures = () => {
 
 const checkFeatures = ({offer: {features: offerFeatures}}) => {
   const chosenFeatures = getChosenFeatures()
-  const hash = offerFeatures.reduce((acc, feature) => {
-    acc[feature] = true; return acc;
-  }, {});
-  return chosenFeatures.every((feature) => {
-    return feature in hash;
-  // Подумать как сделать лучше
+
+  return chosenFeatures.every((chosenFeature) => {
+    return offerFeatures.includes(chosenFeature);
   });
 };
 
