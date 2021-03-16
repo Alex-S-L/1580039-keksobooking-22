@@ -1,19 +1,19 @@
-const FILE_EXTENTIONS = ['jpg', 'png', 'jpeg']
+const FILE_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
-const checkFileExtention = (fileName, extentions) => {
-  return extentions.some((extention) => {
-    return fileName.endsWith(extention);
+const checkFileExtension = (fileName, extensions) => {
+  return extensions.some((extension) => {
+    return fileName.endsWith(extension);
   })
 }
 
 const previewHandler = (previewElement) => {
   return function() {
     const file = this.files[0];
-    const isCorrectExtention = checkFileExtention(file.name.toLowerCase(), FILE_EXTENTIONS);
+    const isCorrectExtension = checkFileExtension(file.name.toLowerCase(), FILE_EXTENSIONS);
     const isImg = previewElement.tagName === 'IMG';
     // const isDiv = previewElement.tagName === 'DIV'
 
-    if (isCorrectExtention) {
+    if (isCorrectExtension) {
       const reader = new FileReader();
 
       reader.addEventListener('load', () => {

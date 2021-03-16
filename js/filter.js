@@ -89,17 +89,8 @@ const checkFeatures = ({offer: {features: offerFeatures}}) => {
   const chosenFeatures = getChosenFeatures()
 
   return chosenFeatures.every((chosenFeature) => {
-    return offerFeatures.some((offerFeature) => {
-      return offerFeature === chosenFeature;
-    })
-  })
-  // const hash = offerFeatures.reduce((acc, feature) => {
-  //   acc[feature] = true;
-  //   return acc;
-  // }, {});
-  // return chosenFeatures.every((feature) => {
-  //   return feature in hash;
-  // });
+    return offerFeatures.includes(chosenFeature);
+  });
 };
 
 const checkFilters = (item) => {

@@ -22,8 +22,8 @@ const successMessage = document.querySelector('#success').content.querySelector(
 const main = document.querySelector('main');
 const avatarInput = form.querySelector('.ad-form-header__input');
 const roomPhotoInput = form.querySelector('.ad-form__input');
-const avatarPrewiew = form.querySelector('.ad-form-header__preview > img');
-const roomPhotoPrewiew = form.querySelector('.ad-form__photo')
+const avatarPreview = form.querySelector('.ad-form-header__preview > img');
+const roomPhotoPreview = form.querySelector('.ad-form__photo')
 
 const minPricesHandler = () => {
   housingPrice.min = MinPrices[housingType.value.toUpperCase()];
@@ -95,7 +95,7 @@ roomNumber.addEventListener('change', roomsHandler);
 capacity.addEventListener('change', capacityHandler);
 housingType.addEventListener('change', minPricesHandler);
 timeField.addEventListener('change', timeFieldHandler);
-avatarInput.addEventListener('change', previewHandler(avatarPrewiew));
-roomPhotoInput.addEventListener('change', previewHandler(roomPhotoPrewiew));
+avatarInput.addEventListener('change', previewHandler(avatarPreview));
+roomPhotoInput.addEventListener('change', previewHandler(roomPhotoPreview));
 form.addEventListener('submit', submitHandler);
 
