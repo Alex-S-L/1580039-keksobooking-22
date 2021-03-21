@@ -36,7 +36,7 @@ const mainMarkerPin = L.icon({
   iconAnchor: pinAnchor,
 });
 const ordinaryMarkerPin = L.icon({
-  iconUrl: '../img//pin.svg',
+  iconUrl: '../img/pin.svg',
   iconSize: pinSize,
   iconAnchor: pinAnchor,
 });
