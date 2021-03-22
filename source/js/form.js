@@ -24,7 +24,8 @@ const main = document.querySelector('main');
 const avatarInput = form.querySelector('.ad-form-header__input');
 const roomPhotoInput = form.querySelector('.ad-form__input');
 const avatarPreview = form.querySelector('.ad-form-header__preview > img');
-const roomPhotoPreview = form.querySelector('.ad-form__photo')
+const roomPhotoPreview = form.querySelector('.ad-form__photo');
+const resetButton = form.querySelector('.ad-form__reset');
 
 const minPricesHandler = () => {
   housingPrice.min = MinPrices[housingType.value.toUpperCase()];
@@ -39,6 +40,16 @@ const resetMinPrice = () => {
 const resetPreview = () => {
   avatarPreview.src = 'img/muffin-grey.svg';
   roomPhotoPreview.removeAttribute('style');
+}
+
+const resetForm = () => {
+  form.reset();
+  resetMapState();
+  resetMainMarkerCoordinates();
+  resetFilters();
+  resetMinPrice();
+  resetPreview();
+  address.value = concatenateCoordinates(MAIN_MARKER_START_COORDINATES);
 }
 
 const timeFieldHandler = (evt) => {
@@ -91,19 +102,18 @@ const showFailPopup = () => {
 const showSuccessPopup = () => {
   main.appendChild(successMessage);
   setTimeout(() => {main.removeChild(successMessage)}, 1000);
-  form.reset();
-  resetMapState();
-  resetMainMarkerCoordinates();
-  resetFilters();
-  resetMinPrice();
-  resetPreview();
-  address.value = concatenateCoordinates(MAIN_MARKER_START_COORDINATES);
+  resetForm();
 }
 
 const submitHandler = (evt) => {
   evt.preventDefault();
   const currentFormData = new FormData(evt.target);
   sendData(showSuccessPopup, showFailPopup, currentFormData);
+}
+
+const resetButtonHandler = (evt) => {
+  evt.preventDefault()
+  resetForm();
 }
 
 roomNumber.addEventListener('change', roomsHandler);
@@ -113,4 +123,4 @@ timeField.addEventListener('change', timeFieldHandler);
 avatarInput.addEventListener('change', previewHandler(avatarPreview));
 roomPhotoInput.addEventListener('change', previewHandler(roomPhotoPreview));
 form.addEventListener('submit', submitHandler);
-
+resetButton.addEventListener('click', resetButtonHandler)
