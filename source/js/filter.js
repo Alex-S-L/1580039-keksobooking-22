@@ -1,4 +1,6 @@
 import {debounce} from './util.js'
+const DEBOUNCE_TIMEOUT = 500;
+
 const PricePoints = {
   LOW: 10000,
   MIDDLE: 50000,
@@ -28,7 +30,6 @@ const GuestsFilterValues = {
   TWO: '2',
   NOT_FOR_GUESTS: '0',
 };
-const DEBOUNCE_TIMEOUT = 500;
 
 const filters = document.querySelector('.map__filters');
 const typeFilter = filters.querySelector('#housing-type');
@@ -114,4 +115,12 @@ const bindFiltrationOnChange = (advertisements, markerCount, cb) => {
   filters.addEventListener('change', debounceHandler);
 }
 
-export {bindFiltrationOnChange}
+const resetFilters = () => {
+  typeFilter.value = TypeFilterValues.ANY
+  priceFilter.value = PriceFilterValues.ANY
+  roomsFilter.value = RoomsFilterValues.ANY
+  guestsFilter.value = GuestsFilterValues.ANY
+  featuresFilters.forEach((feature) => {feature.checked = false})
+}
+
+export {bindFiltrationOnChange, resetFilters}

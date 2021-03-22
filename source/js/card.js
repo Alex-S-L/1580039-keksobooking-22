@@ -1,4 +1,3 @@
-import {getAdvertisement} from './data.js';
 const HousingTypeNames = {
   BUNGALOW: 'Бунгало',
   FLAT: 'Квартира',
@@ -108,4 +107,4 @@ const getAdvertisementCard = (advertisement) => {
   return advertisementCard;
 }
 
-export {getAdvertisementCard, getAdvertisement}
+export {getAdvertisementCard}
