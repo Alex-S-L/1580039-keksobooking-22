@@ -3,9 +3,8 @@ import {getAlertPopup} from './util.js'
 const checkResponse = (response) => {
   if (response.ok) {
     return response.json()
-  } else {
-    throw new Error(response.status + ' ' + response.statusText);
   }
+  throw new Error(response.status + ' ' + response.statusText);
 }
 
 const getData = (onSuccess) => {
