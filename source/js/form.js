@@ -36,6 +36,11 @@ const resetMinPrice = () => {
   housingPrice.placeholder = MinPrices.FLAT;
 }
 
+const resetPreview = () => {
+  avatarPreview.src = 'img/muffin-grey.svg';
+  roomPhotoPreview.removeAttribute('style');
+}
+
 const timeFieldHandler = (evt) => {
   const time = evt.target.value;
   checkinTime.value = checkoutTime.value = time;
@@ -91,6 +96,7 @@ const showSuccessPopup = () => {
   resetMainMarkerCoordinates();
   resetFilters();
   resetMinPrice();
+  resetPreview();
   address.value = concatenateCoordinates(MAIN_MARKER_START_COORDINATES);
 }
 
