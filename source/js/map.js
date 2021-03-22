@@ -91,7 +91,13 @@ const addMarkers = (advertisements) => {
 
 const resetMarkersOnSubmit = (advertisements) => {
   form.addEventListener('submit', () => {
-    addMarkers(advertisements)
+    addMarkers(advertisements);
+  })
+}
+
+const resetMarkersOnReset = (advertisements) => {
+  form.addEventListener('reset', () => {
+    addMarkers(advertisements);
   })
 }
 
@@ -99,12 +105,13 @@ const initMapMarkers = (advertisements) => {
   addMarkers(advertisements);
   bindFiltrationOnChange(advertisements, MARKERS_COUNT, addMarkers);
   resetMarkersOnSubmit(advertisements);
+  resetMarkersOnReset(advertisements);
 }
 
 map.on('load', mapLoadHandler).setView(TOWN_COORDINATES, initialScale);
 tileLayer.addTo(map);
 mainMarker.addTo(map);
-markerGroup.addTo(map)
+markerGroup.addTo(map);
 address.value = concatenateCoordinates(mainMarkerCoordinates);
 mainMarker.on('moveend', addressHandler);
 getData(initMapMarkers);
