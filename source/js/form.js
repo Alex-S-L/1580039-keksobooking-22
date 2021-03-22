@@ -31,6 +31,11 @@ const minPricesHandler = () => {
   housingPrice.placeholder = MinPrices[housingType.value.toUpperCase()];
 }
 
+const resetMinPrice = () => {
+  housingPrice.min = MinPrices.FLAT;
+  housingPrice.placeholder = MinPrices.FLAT;
+}
+
 const timeFieldHandler = (evt) => {
   const time = evt.target.value;
   checkinTime.value = checkoutTime.value = time;
@@ -85,6 +90,7 @@ const showSuccessPopup = () => {
   resetMapState();
   resetMainMarkerCoordinates();
   resetFilters();
+  resetMinPrice();
   address.value = concatenateCoordinates(MAIN_MARKER_START_COORDINATES);
 }
 

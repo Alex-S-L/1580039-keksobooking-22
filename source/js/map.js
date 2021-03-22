@@ -5,7 +5,7 @@ import {getData} from './server-interaction.js';
 import {bindFiltrationOnChange} from './filter.js';
 const MARKERS_COUNT = 10;
 
-const TOKIO_COORDINATES = {
+const TOWN_COORDINATES = {
   lat: 35.68742,
   lng: 139.77356,
 };
@@ -63,7 +63,7 @@ const addressHandler = () => {
 }
 
 const resetMapState = () => {
-  map.setView(TOKIO_COORDINATES, initialScale);
+  map.setView(TOWN_COORDINATES, initialScale);
 }
 
 const resetMainMarkerCoordinates = () => {
@@ -101,7 +101,7 @@ const initMapMarkers = (advertisements) => {
   resetMarkersOnSubmit(advertisements);
 }
 
-map.on('load', mapLoadHandler).setView(TOKIO_COORDINATES, initialScale);
+map.on('load', mapLoadHandler).setView(TOWN_COORDINATES, initialScale);
 tileLayer.addTo(map);
 mainMarker.addTo(map);
 markerGroup.addTo(map)
