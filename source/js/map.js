@@ -3,6 +3,8 @@ import {getAdvertisementCard} from './card.js';
 import {toggleFormState as mapLoadHandler} from './form-access.js';
 import {getData} from './server-interaction.js';
 import {bindFiltrationOnChange} from './filter.js';
+const MARKERS_COUNT = 10;
+
 const TOKIO_COORDINATES = {
   lat: 35.68742,
   lng: 139.77356,
@@ -15,10 +17,10 @@ const MAIN_MARKER_START_COORDINATES = {
   lat: 35.68742,
   lng: 139.77356,
 };
-const MARKERS_COUNT = 10;
 
+const form = document.querySelector('.ad-form');
 const address = document.querySelector('#address');
-const initialScale = 9;
+const initialScale = 10;
 const coordinatesPrecision = 5;
 const pinSize = [50, 50];
 const pinAnchor = [pinSize[0] / 2, pinSize[1]];
@@ -49,10 +51,10 @@ const mainMarker = L.marker(
 );
 const markerGroup = L.layerGroup([]);
 
-const concatenateCoordinates = (coordinates) => {
-  coordinates.lat = coordinates.lat.toFixed(coordinatesPrecision);
-  coordinates.lng = coordinates.lng.toFixed(coordinatesPrecision);
-  return `${coordinates.lat} ${coordinates.lng}`;
+const concatenateCoordinates = ({lat, lng}) => {
+  const x = lat.toFixed(coordinatesPrecision);
+  const y = lng.toFixed(coordinatesPrecision);
+  return `${x} ${y}`;
 }
 
 const addressHandler = () => {
@@ -60,12 +62,16 @@ const addressHandler = () => {
   address.value = concatenateCoordinates(mainMarkerCoordinates);
 }
 
+const resetMapState = () => {
+  map.setView(TOKIO_COORDINATES, initialScale);
+}
+
 const resetMainMarkerCoordinates = () => {
   mainMarker.setLatLng(MAIN_MARKER_START_COORDINATES);
 }
 
 const addMarkers = (advertisements) => {
-  markerGroup.clearLayers()
+  markerGroup.clearLayers();
   advertisements.forEach((advertisement) => {
     let {location: {lat: x, lng: y}} = advertisement
     const marker = L.marker(
@@ -83,9 +89,16 @@ const addMarkers = (advertisements) => {
   })
 }
 
+const resetMarkersOnSubmit = (advertisements) => {
+  form.addEventListener('submit', () => {
+    addMarkers(advertisements)
+  })
+}
+
 const initMapMarkers = (advertisements) => {
-  addMarkers(advertisements)
-  bindFiltrationOnChange(advertisements, MARKERS_COUNT, addMarkers)
+  addMarkers(advertisements);
+  bindFiltrationOnChange(advertisements, MARKERS_COUNT, addMarkers);
+  resetMarkersOnSubmit(advertisements);
 }
 
 map.on('load', mapLoadHandler).setView(TOKIO_COORDINATES, initialScale);
@@ -96,4 +109,4 @@ address.value = concatenateCoordinates(mainMarkerCoordinates);
 mainMarker.on('moveend', addressHandler);
 getData(initMapMarkers);
 
-export {resetMainMarkerCoordinates, MAIN_MARKER_START_COORDINATES, concatenateCoordinates}
+export {resetMainMarkerCoordinates, MAIN_MARKER_START_COORDINATES, concatenateCoordinates, resetMapState}

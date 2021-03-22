@@ -1,24 +1,3 @@
-const getCorrectRange = (min, max) => {
-  if (min >= 0 && max > min) {
-    return true;
-  }
-  alert('Функций getRandomNumber получила недопустимое значение')
-  return false;
-};
-
-const getRandomNumber = (min, max) => {
-  if (getCorrectRange(min, max)) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-};
-
-const getRandomFloat = (min, max, afterComma) => {
-  if (getCorrectRange(min, max)) {
-    let randomFloat = Math.random() * (max - min + (0.1 ** afterComma)) + min;
-    return Math.floor(randomFloat * 10 ** afterComma) / 10 ** afterComma;
-  }
-};
-
 const getAlertPopup = (message) => {
   const alertContainer = document.createElement('div')
   alertContainer.style.width = '300px';
@@ -46,4 +25,4 @@ const debounce = (f, ms) => {
   };
 }
 
-export {getRandomFloat, getRandomNumber, getAlertPopup, debounce};
+export {getAlertPopup, debounce};

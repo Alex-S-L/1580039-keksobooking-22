@@ -1,6 +1,7 @@
 import {sendData} from './server-interaction.js'
-import {resetMainMarkerCoordinates, MAIN_MARKER_START_COORDINATES, concatenateCoordinates} from './map.js'
+import {resetMainMarkerCoordinates, MAIN_MARKER_START_COORDINATES, concatenateCoordinates, resetMapState} from './map.js'
 import {previewHandler} from './preview-handler.js'
+import {resetFilters} from './filter.js'
 const MinPrices = {
   BUNGALOW: 0,
   FLAT: 1000,
@@ -81,7 +82,9 @@ const showSuccessPopup = () => {
   main.appendChild(successMessage);
   setTimeout(() => {main.removeChild(successMessage)}, 1000);
   form.reset();
+  resetMapState();
   resetMainMarkerCoordinates();
+  resetFilters();
   address.value = concatenateCoordinates(MAIN_MARKER_START_COORDINATES);
 }
 
